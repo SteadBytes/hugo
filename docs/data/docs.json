@@ -1504,7 +1504,11 @@
           "table": true,
           "strikethrough": true,
           "linkify": true,
-          "taskList": true
+          "taskList": true,
+          "katex": false
+        },
+        "katex": {
+          "warnings": false
         }
       },
       "blackFriday": {

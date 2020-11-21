@@ -215,6 +215,32 @@ func TestConvertIssues(t *testing.T) {
 
 }
 
+// Simple smoke tests for KaTeX rendering
+func TestKatexBasic(t *testing.T) {
+	c := qt.New(t)
+
+	mconf := markup_config.Default
+	mconf.Goldmark.Extensions.Katex = true
+
+	c.Run("Basic inline", func(c *qt.C) {
+		input := `Hey here is some inline math $x + 2$!`
+
+		b := convert(c, mconf, input)
+		got := string(b.Bytes())
+
+		c.Assert(got, qt.Contains, "Hey here is some inline math <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><annotation encoding=\"application/x-tex\">x + 2</annotation></semantics></math></span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.66666em;vertical-align:-0.08333em;\"></span><span class=\"mord mathdefault\">x</span><span class=\"mspace\" style=\"margin-right:0.2222222222222222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222222222222222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.64444em;vertical-align:0em;\"></span><span class=\"mord\">2</span></span></span></span>!")
+	})
+
+	c.Run("Basic display", func(c *qt.C) {
+		input := `Hey here is some display math $$x + 2$$!`
+
+		b := convert(c, mconf, input)
+		got := string(b.Bytes())
+
+		c.Assert(got, qt.Contains, "Hey here is some display math <span class=\"katex-display\"><span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow><annotation encoding=\"application/x-tex\">x + 2</annotation></semantics></math></span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.66666em;vertical-align:-0.08333em;\"></span><span class=\"mord mathdefault\">x</span><span class=\"mspace\" style=\"margin-right:0.2222222222222222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222222222222222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.64444em;vertical-align:0em;\"></span><span class=\"mord\">2</span></span></span></span></span>!")
+	})
+}
+
 func TestCodeFence(t *testing.T) {
 	c := qt.New(t)
 

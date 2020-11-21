@@ -22,6 +22,7 @@ import (
 	"runtime/debug"
 
 	"github.com/gohugoio/hugo/identity"
+	qjskatex "github.com/graemephi/goldmark-qjs-katex"
 
 	"github.com/pkg/errors"
 
@@ -133,6 +134,10 @@ func newMarkdown(pcfg converter.ProviderConfig) goldmark.Markdown {
 
 	if cfg.Extensions.Footnote {
 		extensions = append(extensions, extension.Footnote)
+	}
+
+	if cfg.Extensions.Katex {
+		extensions = append(extensions, &qjskatex.Extension{EnableWarnings: cfg.Katex.Warnings})
 	}
 
 	if cfg.Parser.AutoHeadingID {

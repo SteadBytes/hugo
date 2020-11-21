@@ -30,6 +30,8 @@ var Default = Config{
 		Strikethrough:  true,
 		Linkify:        true,
 		TaskList:       true,
+		// Disable by default as it may cause issues for client-side LaTeX rendering.
+		Katex: false,
 	},
 	Renderer: Renderer{
 		Unsafe: false,
@@ -39,6 +41,7 @@ var Default = Config{
 		AutoHeadingIDType: AutoHeadingIDTypeGitHub,
 		Attribute:         true,
 	},
+	Katex: Katex{},
 }
 
 // Config configures Goldmark.
@@ -46,6 +49,7 @@ type Config struct {
 	Renderer   Renderer
 	Parser     Parser
 	Extensions Extensions
+	Katex      Katex
 }
 
 type Extensions struct {
@@ -58,6 +62,9 @@ type Extensions struct {
 	Strikethrough bool
 	Linkify       bool
 	TaskList      bool
+
+	// Server-side LaTeX rendering via KaTeX
+	Katex bool
 }
 
 type Renderer struct {
@@ -83,4 +90,9 @@ type Parser struct {
 
 	// Enables custom attributes.
 	Attribute bool
+}
+
+type Katex struct {
+	// Output LaTeX rendering warnings
+	Warnings bool
 }
